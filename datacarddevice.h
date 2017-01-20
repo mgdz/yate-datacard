@@ -228,6 +228,11 @@ public:
     bool getParams(NamedList* list);
     String getStatus();
 
+	//TODO: monitor cellular network parameters
+	//maybe using getStatus more correct?
+
+	bool getNetworkStatus(NamedList *list);
+
     void setConnection(Connection* conn)
 	{ m_conn = conn; }
 

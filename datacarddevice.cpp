@@ -413,6 +413,23 @@ bool CardDevice::getParams(NamedList* list)
     return true;
 }
 
+/*
+ * FIXME: tempopary solution. only for testing.
+ */
+bool CardDevice::getNetworkStatus(NamedList *list)
+{
+    m_mutex.lock();
+    list->addParam("device", c_str());
+    String reg_status = decodeRegStatus(m_gsm_reg_status);
+    list->addParam("gsm_reg_status", reg_status);
+    list->addParam("rssi",String(m_rssi));
+    list->addParam("provider_name",m_provider_name);
+    list->addParam("lar",m_location_area_code);
+    list->addParam("cellid", m_cell_id);
+    m_mutex.unlock();
+    return true;
+}
+
 String CardDevice::getStatus()
 {
 //TODO: Implement this
