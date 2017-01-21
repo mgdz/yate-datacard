@@ -6,3 +6,4 @@ config.status
 configure
 datacard.yate
 yate-module.spec
+datacard/
