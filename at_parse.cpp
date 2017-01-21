@@ -385,7 +385,7 @@ int CardDevice::at_parse_creg(char* str, size_t len, int* gsm_reg, int* gsm_reg_
 
 	if (reply.matches(tmpl)) {
 		for (int i = 0; i <= reply.matchCount(); i++) {
-			Debug(DebugAll, "match[%d]=%s",i,reply.matchString(i).c_str())
+		  Debug(DebugAll, "match[%d]=%s",i,reply.matchString(i).c_str());
 		}
 	}
 
