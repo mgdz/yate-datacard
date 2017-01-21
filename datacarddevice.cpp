@@ -857,6 +857,10 @@ void DevicesEndPoint::onReceiveSMS(CardDevice* dev, const String& caller, const 
 {
 }
 
+void DevicesEndPoint::onUpdateNetworkStatus(CardDevice* dev)
+{
+}
+
 bool DevicesEndPoint::sendSMS(CardDevice* dev, const String &called, const String &sms)
 {
     if (!dev)
