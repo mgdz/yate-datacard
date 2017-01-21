@@ -347,6 +347,48 @@ char* CardDevice::at_parse_cops(char* str, size_t len)
 
 int CardDevice::at_parse_creg(char* str, size_t len, int* gsm_reg, int* gsm_reg_status, char** lac, char** ci)
 {
+	/*
+	* HUAWEI UMTS Datacard Modem AT Command Interface Specification V2.3
+	* Paragraph 9.2 Network registration +CREG
+	* +CREG? Response:
+	* +CREG:<n>,<stat>[,<lac>,<ci>]
+	* Defined Values
+	* <n>:
+	* 0    Disable proactive reporting of "CREG"
+	* 1    Enable proactive reporting of "+CREG <stat>"
+	* 2    Enable proactive reporting of "+CREG: <stat>[,<lac>,<ci>]"..
+	* <stat>:
+	* 0    Not registered. The MS is not searching the new operators to be registered.
+	* 1    Local network is registered
+	* 2    Not registered. But the MS is searching the new operators to be registered.
+	* 3    Registration rejected
+	* 4    Unknown reasons
+	* 5    Roaming network is registered
+	* <lac>: Position code information, composed of four characters and expressed in
+	* hexadecimal. (Example: "00C3"	= "195"	in decimal)
+	* <ci>: Cell information, composed of four characters and expressed in hexadecimal.
+	* (Extended Information: according 3GPP Rel7, four characters are requested, but if
+	* before Rel7, for example the currently network is Rel6 mostly, only the last two
+	* characters is valid, the other characters is invalid and should be ignored. For example,
+	* if the <CI> return 3B3DE1C, only DE1C is valid and could be used as DE1C is the last
+	* two characters.)
+	*/
+
+	static Regexp tmpl("CREG:[[:space:]]*\\([[0-2]][[:space:]]*\\),"
+						"\\([[:space:]]*[[0-5]][[:space:]]*\\),"
+						"\\([[:space:]]*[0-9a-afA-F]+[[:space:]]*\\),"
+						"\\([[:space:]]*[0-9a-afA-F]+[[:space:]]*\\)");
+
+	String reply;
+	reply.assign(str, len);
+	reply.trimSpaces();
+
+	if (reply.matches(tmpl)) {
+		for (int i = 0; i <= reply.matchCount(); i++) {
+			Debug(DebugAll, "match[%d]=%s",i,reply.matchString(i).c_str())
+		}
+	}
+
 	size_t	i;
 	int	state;
 	char*	p1 = NULL;
